@@ -1,0 +1,5 @@
+export { default as Chat } from './Btn_Chat'
+export { default as Notas_Faltas } from './Notas_Faltas/index'
+export { default as Materia } from './Materia'
+export { default as Chat_txt } from './Chat_txt'
+export { default as DescricaoATV } from './DescricaoATV'

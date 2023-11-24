@@ -1,0 +1,100 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User{
+  id       String @id @default(auto()) @map("_id") @db.ObjectId 
+  email    String @unique
+  senha String
+  cpf String @unique
+  nome String
+
+  @@map("Responsavel")
+}
+
+model UserAluno{
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  nome    String
+  cpf String @unique
+  escola_id   String
+  responsavel_id String
+  @@map("Aluno")
+}
+
+model Materia{
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  nome    String
+  aluno_id String
+  faltas Int
+  bimestre1 Int[]
+  bimestre2 Int[]
+  bimestre3 Int[]
+  @@map("Materias")
+}
+
+model Escola{
+  id       String @id @default(auto()) @map("_id") @db.ObjectId 
+  nome   String
+  cep String 
+  @@map("Escolas")
+}
+
+model UserProfessor{
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  nome    String
+  cpf String @unique
+  escola_id   String
+  @@map("Professor")
+}
+
+model Turma{
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  nome    String
+  escola_id   String
+  professor_id String
+  aluno_id String[]
+  
+  @@map("Turmas")
+}
+
+model Chat{
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  mensagem   String
+  recebe_id String
+  envio_id String
+  @@map("Chats")
+}
+
+model Comunicado{
+  
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  titulo   String
+  recado String
+  escola_id String
+
+  @@map("Comunicado")
+}
+
+model Atividade{
+  
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  titulo   String
+  tipo String
+  decricao String
+  informacao String
+  nota Int
+  date DateTime
+  turma_id String 
+  professor_id String 
+  @@map("Atividade")
+}
+
+
+
+
+

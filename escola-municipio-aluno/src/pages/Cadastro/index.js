@@ -1,0 +1,140 @@
+import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import * as Animatable from 'react-native-animatable';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import api from '../../Api'
+import { useNavigation } from '@react-navigation/native';
+
+export default function Cadastro() {
+  
+  const navigation = useNavigation();
+
+  const [formData, setFormData] = useState({
+    nome: '',
+    cpf: '',
+    email: '',
+    senha: '',
+  });
+
+  const cadastrar = async () => {
+
+    try {
+      const response = await api.post('/user', formData);
+      console.log('Resposta do servidor:', response.data);
+
+      navigation.navigate('Login');
+     
+    } catch (error) {
+      console.error('Erro ao enviar dados:', error);
+    
+    }
+  };
+
+  const handleInputChange = (fieldName, text) => {
+    setFormData({
+      ...formData,
+      [fieldName]: text,
+    });
+  };
+
+  return (
+    <KeyboardAwareScrollView contentContainerStyle={styles.container}>
+      <Animatable.View delay={500} animation="fadeInLeft" style={styles.containerHeader}>
+        <Text style={styles.message}>Cadastre-se</Text>
+      </Animatable.View>
+      <Animatable.View delay={500} animation="fadeInUp" style={styles.containerForm}>
+        <Text style={styles.title}>Nome</Text>
+        <TextInput
+          placeholder="Digite seu nome completo..."
+          style={styles.input}
+          onChangeText={(text) => handleInputChange('nome', text)}
+          value={formData.nome}
+        />
+
+        <Text style={styles.title}>CPF</Text>
+        <TextInput
+          placeholder="Digite seu CPF..."
+          style={styles.input}
+          onChangeText={(text) => handleInputChange('cpf', text)}
+          value={formData.cpf}
+        />
+
+        <Text style={styles.title}>Email</Text>
+        <TextInput
+          placeholder="Digite seu email..."
+          style={styles.input}
+          onChangeText={(text) => handleInputChange('email', text)}
+          value={formData.email}
+        />
+
+        <Text style={styles.title}>Senha</Text>
+        <TextInput
+          placeholder="Digite sua senha..."
+          style={styles.input}
+          onChangeText={(text) => handleInputChange('senha', text)}
+          value={formData.senha}
+        />
+
+        <Text style={styles.title}>Confirmar senha</Text>
+        <TextInput
+          placeholder="Digite sua senha..."
+          style={styles.input}
+        />
+
+        <TouchableOpacity style={styles.btn} onPress={cadastrar}>
+          <Text style={styles.btn_text}>Cadastrar</Text>
+        </TouchableOpacity>
+      </Animatable.View>
+    </KeyboardAwareScrollView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+    backgroundColor: '#3086ff',
+  },
+  containerHeader: {
+    marginTop: '14%',
+    marginBottom: '8%',
+    paddingStart: '5%',
+  },
+  message: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#ffffff',
+  },
+  containerForm: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    paddingStart: '10%',
+    paddingEnd: '10%',
+    justifyContent: 'center',
+  },
+  title: {
+    fontSize: 20,
+    marginTop: 28,
+  },
+  input: {
+    borderBottomWidth: 1,
+    height: 40,
+    marginBottom: 12,
+    fontSize: 16,
+  },
+  btn: {
+    backgroundColor: '#121212',
+    width: '100%',
+    borderRadius: 50,
+    paddingVertical: 8,
+    marginTop: 14,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  btn_text: {
+    color: '#ffffff',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+});
